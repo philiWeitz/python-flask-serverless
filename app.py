@@ -1,5 +1,5 @@
 import os
-from flask import Flask, jsonify
+from flask import Flask, jsonify, abort
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
@@ -9,6 +9,9 @@ POSTGRES_PASSWORD = os.environ["POSTGRES_PASSWORD"]
 POSTGRES_PORT = os.environ["POSTGRES_PORT"]
 POSTGRES_DB = os.environ["POSTGRES_DB"]
 POSTGRES_HOST = os.environ["POSTGRES_HOST"]
+
+app.config["DEBUG"] = True
+app.config["DEVELOPMENT"] = True
 
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://%s:%s@%s:%s/%s" % (
@@ -26,24 +29,38 @@ from models import JobOffer
 
 @app.route("/health")
 def health():
-    jobOffer = JobOffer(
-        organization="a",
-        occupation="a",
-        job="a",
-        address="a",
-        search_date_date="a",
-        link="a",
-        lat=1,
-        lon=2,
-    )
+    return {"status": "OK"}
 
+
+@app.route("/jobs")
+def get_jobs():
     try:
-        db.session.add(jobOffer)
-        db.session.commit()
+        jobs = JobOffer.query.all()
+        return jsonify([e.serialize() for e in jobs])
     except Exception as e:
-        return str(e)
+        abort(500, e)
 
-    return jsonify({"status": "OK"})
+
+@app.route("/jobs/<id>")
+def get_job_by_id(id):
+    try:
+        job_offer = JobOffer.query.filter_by(id=id).first()
+        if not job_offer:
+            abort(404, description="No job found with this id")
+
+        return jsonify(job_offer.serialize())
+    except Exception as e:
+        abort(500, e)
+
+
+@app.errorhandler(404)
+def resource_not_found(e):
+    return jsonify(error=str(e.description), code=404), 404
+
+
+@app.errorhandler(500)
+def resource_not_found(e):
+    return jsonify(error=str(e.description), code=500), 500
 
 
 if __name__ == "__main__":

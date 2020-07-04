@@ -38,6 +38,6 @@ class JobOffer(db.Model):
             "address": self.address,
             "search_date_date": self.search_date_date,
             "link": self.link,
-            "lat": self.lat,
-            "lon": self.lon,
+            "lat": str(self.lat),
+            "lon": str(self.lon),
         }

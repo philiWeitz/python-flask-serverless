@@ -46,6 +46,12 @@ functions:
       - http:
           path: health
           method: get
+      - http:
+          path: jobs
+          method: get
+      - http:
+          path: jobs/{id}
+          method: get
 
 
 package:
