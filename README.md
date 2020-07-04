@@ -11,7 +11,6 @@
 - install dependencies ```pipenv install```
 - copy .env.sample to .env and fill in all variables
 - start local database ```docker-compose up -d database```
-- create database "jobs"
 - migrate local database ```python manage.py db upgrade```
 - run flask app ```python app.py```
 
