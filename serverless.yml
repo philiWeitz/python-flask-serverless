@@ -24,6 +24,7 @@ custom:
   pythonRequirements:
     usePipenv: false
     dockerizePip: true
+    slim: true
   wsgi:
     app: app.app
     packRequirements: false
@@ -52,11 +53,9 @@ functions:
       - http:
           path: jobs/{id}
           method: get
-
-
-package:
-  exclude:
-    - node_modules/**
+      - http:
+          path: fetch-jobs
+          method: get
 
 
 resources:
@@ -71,3 +70,9 @@ resources:
         DBInstanceClass: db.t2.micro
         Engine: postgres
         PubliclyAccessible: true
+
+
+package:
+  exclude:
+    - node_modules/**
+    - migrations/**

@@ -5,6 +5,8 @@ from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 
+VANTAA_JOB_OFFER_URL = "http://gis.vantaa.fi/rest/tyopaikat/v1/kaikki"
+
 POSTGRES_USER = os.environ["POSTGRES_USER"]
 POSTGRES_PASSWORD = os.environ["POSTGRES_PASSWORD"]
 POSTGRES_PORT = os.environ["POSTGRES_PORT"]
@@ -56,11 +58,11 @@ def get_job_by_id(id):
 
 @app.route("/fetch-jobs")
 def fetch_jobs():
-    response = requests.get("http://gis.vantaa.fi/rest/tyopaikat/v1/kaikki")
+    response = requests.get(VANTAA_JOB_OFFER_URL)
     job_offers = [JobOffer.from_json(job_json) for job_json in response.json()]
 
     try:
-        db.session.add_all(job_offers)
+        [db.session.merge(job_offer) for job_offer in job_offers]
         db.session.commit()
         return ""
     except Exception as e:

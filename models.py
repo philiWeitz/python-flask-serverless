@@ -1,27 +1,29 @@
+import hashlib
 from app import db
 
 
 class JobOffer(db.Model):
     __tablename__ = "job_offers"
 
-    id = db.Column(db.Integer(), primary_key=True)
+    id = db.Column(db.String(), primary_key=True)
     organization = db.Column(db.String())
     occupation = db.Column(db.String())
     job = db.Column(db.String())
     address = db.Column(db.String())
-    search_date_date = db.Column(db.String())
+    search_date = db.Column(db.String())
     link = db.Column(db.String())
-    lat = db.Column(db.Numeric())
-    lon = db.Column(db.Numeric())
+    lat = db.Column(db.String())
+    lon = db.Column(db.String())
 
     def __init__(
-        self, organization, occupation, job, address, search_date_date, link, lat, lon
+        self, id, organization, occupation, job, address, search_date, link, lat, lon,
     ):
+        self.id = id
         self.organization = organization
         self.occupation = occupation
         self.job = job
         self.address = address
-        self.search_date_date = search_date_date
+        self.search_date = search_date
         self.link = link
         self.lat = lat
         self.lon = lon
@@ -29,14 +31,15 @@ class JobOffer(db.Model):
     @classmethod
     def from_json(cls, json):
         return JobOffer(
+            id=hashlib.md5(json["tyoavain"].encode("utf-8")).hexdigest(),
             organization=json["organisaatio"],
             occupation=json["ammattiala"],
             job=json["tyotehtava"],
             address=json["osoite"],
-            search_date_date=json["haku_paattyy_pvm"],
+            search_date=json["haku_paattyy_pvm"],
             link=json["linkki"],
-            lat=json["x"],
-            lon=json["y"],
+            lat=str(json["x"]),
+            lon=str(json["y"]),
         )
 
     def __repr__(self):
@@ -49,8 +52,8 @@ class JobOffer(db.Model):
             "occupation": self.occupation,
             "job": self.job,
             "address": self.address,
-            "search_date_date": self.search_date_date,
+            "search_date": self.search_date,
             "link": self.link,
-            "lat": str(self.lat),
-            "lon": str(self.lon),
+            "lat": self.lat,
+            "lon": self.lon,
         }
