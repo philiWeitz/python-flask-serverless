@@ -26,6 +26,19 @@ class JobOffer(db.Model):
         self.lat = lat
         self.lon = lon
 
+    @classmethod
+    def from_json(cls, json):
+        return JobOffer(
+            organization=json["organisaatio"],
+            occupation=json["ammattiala"],
+            job=json["tyotehtava"],
+            address=json["osoite"],
+            search_date_date=json["haku_paattyy_pvm"],
+            link=json["linkki"],
+            lat=json["x"],
+            lon=json["y"],
+        )
+
     def __repr__(self):
         return "<id {}>".format(self.id)
 

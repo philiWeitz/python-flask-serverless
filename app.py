@@ -1,4 +1,5 @@
 import os
+import requests
 from flask import Flask, jsonify, abort
 from flask_sqlalchemy import SQLAlchemy
 
@@ -49,6 +50,19 @@ def get_job_by_id(id):
             abort(404, description="No job found with this id")
 
         return jsonify(job_offer.serialize())
+    except Exception as e:
+        abort(500, e)
+
+
+@app.route("/fetch-jobs")
+def fetch_jobs():
+    response = requests.get("http://gis.vantaa.fi/rest/tyopaikat/v1/kaikki")
+    job_offers = [JobOffer.from_json(job_json) for job_json in response.json()]
+
+    try:
+        db.session.add_all(job_offers)
+        db.session.commit()
+        return ""
     except Exception as e:
         abort(500, e)
 
