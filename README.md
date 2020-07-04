@@ -9,12 +9,15 @@
 ## Run locally
 - initialize virtual env ```pipenv shell```
 - install dependencies ```pipenv install```
-- add git hooks: ```python -m python_githooks```
 - copy .env.sample to .env and fill in all variables
 - start local database ```docker-compose up -d database```
 - create database "jobs"
 - migrate local database ```python manage.py db upgrade```
 - run flask app ```python app.py```
+
+## add git hooks
+To prevent formatting conflicts I would strongly suggest to use "black" via git hooks
+- setup git hooks via ```python -m python_githooks```
 
 ## Deploy to AWS
 - install serverless packages ```npm install```
