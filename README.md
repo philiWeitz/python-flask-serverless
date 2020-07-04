@@ -9,6 +9,7 @@
 ## Run locally
 - initialize virtual env ```pipenv shell```
 - install dependencies ```pipenv install```
+- add git hooks: ```python -m python_githooks```
 - copy .env.sample to .env and fill in all variables
 - start local database ```docker-compose up -d database```
 - create database "jobs"

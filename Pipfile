@@ -13,6 +13,8 @@ python-dotenv = "*"
 virtualenv = "*"
 flask-script = "*"
 flask-migrate = "*"
+black = "*"
+python-githooks = "*"
 
 [requires]
 python_version = "3.7"
