@@ -1,0 +1,67 @@
+service: python-flask-serverless
+
+
+plugins:
+  - serverless-wsgi
+  - serverless-offline-python
+  - serverless-python-requirements
+
+
+provider:
+  name: aws
+  runtime: python3.7
+  region: us-east-1
+  stage: dev
+  environment:
+    POSTGRES_DB: ${self:custom.POSTGRES_DB}
+    POSTGRES_USER: ${self:custom.POSTGRES_USER}
+    POSTGRES_PASSWORD: ${self:custom.POSTGRES_PASSWORD}
+    POSTGRES_PORT: ${self:custom.POSTGRES_PORT}
+    POSTGRES_HOST: ${self:custom.POSTGRES_HOST}
+
+
+custom:
+  pythonRequirements:
+    usePipenv: false
+    dockerizePip: true
+  wsgi:
+    app: app.app
+    packRequirements: false
+  POSTGRES_DB:
+    ${env:POSTGRES_DB}
+  POSTGRES_USER:
+    ${env:POSTGRES_USER}
+  POSTGRES_PASSWORD:
+    ${env:POSTGRES_PASSWORD}
+  POSTGRES_PORT:
+    Fn::GetAtt: [PostgreSqlRDSInstance, Endpoint.Port]
+  POSTGRES_HOST:
+    Fn::GetAtt: [PostgreSqlRDSInstance, Endpoint.Address]
+
+
+functions:
+  api:
+    handler: wsgi_handler.handler
+    events:
+      - http:
+          path: health
+          method: get
+
+
+package:
+  exclude:
+    - node_modules/**
+
+
+resources:
+  Resources:
+    PostgreSqlRDSInstance:
+      Type: 'AWS::RDS::DBInstance'
+      Properties:
+        DBName: 'jobs'
+        MasterUsername: 'postgres'
+        MasterUserPassword: 'postgres'
+        AllocatedStorage: 20
+        DBInstanceClass: db.t2.micro
+        Engine: postgres
+        PubliclyAccessible: true

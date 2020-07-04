@@ -1,27 +1,43 @@
 import os
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, jsonify
 from flask_sqlalchemy import SQLAlchemy
-from config import ProductionConfig
-from dotenv import load_dotenv
 
 app = Flask(__name__)
 
-# load env variables from .aws.env file
-load_dotenv()
+POSTGRES_USER = os.environ['POSTGRES_USER']
+POSTGRES_PASSWORD = os.environ['POSTGRES_PASSWORD']
+POSTGRES_PORT = os.environ['POSTGRES_PORT']
+POSTGRES_DB = os.environ['POSTGRES_DB']
+POSTGRES_HOST = os.environ['POSTGRES_HOST']
 
-# use production config by default
-app.config.from_object(os.environ['APP_SETTINGS'] or ProductionConfig)
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SQLALCHEMY_DATABASE_URI'] ='postgresql://%s:%s@%s:%s/%s' % (
+        POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_HOST, POSTGRES_PORT, POSTGRES_DB)
+
 db = SQLAlchemy(app)
 
+from models import JobOffer
 
 @app.route("/health")
 def health():
-    return "Healthy"
+    jobOffer = JobOffer(
+        organization='a',
+        occupation='a',
+        job='a',
+        address='a',
+        search_date_date='a',
+        link='a',
+        lat=1,
+        lon=2
+    )
 
+    try:
+        db.session.add(jobOffer)
+        db.session.commit()
+    except Exception as e:
+        return (str(e))
 
-@app.route("/book")
-def book():
-    return "Hello World!"
+    return jsonify({'status': 'OK'})
 
 
 if __name__ == '__main__':

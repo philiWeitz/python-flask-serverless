@@ -8,10 +8,11 @@ verify_ssl = true
 [packages]
 flask = "*"
 flask-sqlalchemy = "*"
-flask-script = "*"
-flask-migrate = "*"
 psycopg2-binary = "*"
 python-dotenv = "*"
+virtualenv = "*"
+flask-script = "*"
+flask-migrate = "*"
 
 [requires]
 python_version = "3.7"
