@@ -7,8 +7,8 @@
 - AWS user with efficent roles to manage lambdas, RDS
 
 ## Run locally
-- initialize virtual env ```pipenv shell```
-- install dependencies ```pipenv install```
+- initialize virtual env ```virtualenv```
+- install dependencies ```pip install -r requirements.txt```
 - copy .env.sample to .env and fill in all variables
 - start local database ```cd docker && docker-compose up -d database```
 - migrate local database ```python manage.py db upgrade```

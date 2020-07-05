@@ -1,0 +1,19 @@
+language: python
+
+python:
+  - "3.7"
+
+node_js:
+  - 12
+
+install:
+  - pip install -r requirements.txt
+  - npm install
+
+#script:
+#  - pytest
+
+deploy:
+  - sls deploy
+  on:
+    branch: master
