@@ -1,9 +1,11 @@
 import os
 import requests
+from flask_cors import CORS, cross_origin
 from flask import Flask, jsonify, abort
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
+CORS(app)
 
 VANTAA_JOB_OFFER_URL = "http://gis.vantaa.fi/rest/tyopaikat/v1/kaikki"
 
@@ -31,11 +33,13 @@ from models import JobOffer
 
 
 @app.route("/health")
+@cross_origin()
 def health():
     return {"status": "OK"}
 
 
 @app.route("/jobs")
+@cross_origin()
 def get_jobs():
     try:
         jobs = JobOffer.query.all()
@@ -45,6 +49,7 @@ def get_jobs():
 
 
 @app.route("/jobs/<id>")
+@cross_origin()
 def get_job_by_id(id):
     try:
         job_offer = JobOffer.query.filter_by(id=id).first()
