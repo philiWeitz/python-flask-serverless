@@ -10,7 +10,7 @@
 - initialize virtual env ```pipenv shell```
 - install dependencies ```pipenv install```
 - copy .env.sample to .env and fill in all variables
-- start local database ```docker-compose up -d database```
+- start local database ```cd docker && docker-compose up -d database```
 - migrate local database ```python manage.py db upgrade```
 - run flask app ```flask run```
 
