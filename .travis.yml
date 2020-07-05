@@ -1,5 +1,8 @@
 language: python
 
+os:
+  - linux
+
 python:
   - "3.7"
 
@@ -10,10 +13,5 @@ install:
   - pip install -r requirements.txt
   - npm install
 
-#script:
-#  - pytest
-
-deploy:
-  - sls deploy
-  on:
-    branch: master
+after_success:
+  - test $TRAVIS_BRANCH = "master" && sls deploy
