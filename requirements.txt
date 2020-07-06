@@ -10,3 +10,5 @@ Werkzeug==1.0.1
 requests==2.24.0
 Flask-Cors==3.0.8
 pytest==5.4.3
+python-githooks==1.0.6
+black==19.10b0

@@ -10,11 +10,16 @@ node_js:
   - 12
 
 install:
+  - nvm install 12
+  - nvm use 12
+  - node --version
   - pip install -r requirements.txt
+  - npm install -g serverless
   - npm install
 
 script:
+  - black --check ./
   - pytest
 
 after_success:
-  - test $TRAVIS_BRANCH = "master" && sls deploy
+  - test $TRAVIS_BRANCH = "master" && serverless deploy
