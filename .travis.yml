@@ -13,5 +13,8 @@ install:
   - pip install -r requirements.txt
   - npm install
 
+script:
+  - pytest
+
 after_success:
   - test $TRAVIS_BRANCH = "master" && sls deploy

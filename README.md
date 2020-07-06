@@ -2,15 +2,16 @@
 
 ## Requirements
 - docker is installed
-- pipenv is installed
+- virtualenv is installed
 - npm is installed
-- AWS user with efficent roles to manage lambdas, RDS
+- AWS user with efficient roles to manage lambdas, RDS
 
 ## Run locally
-- initialize virtual env ```virtualenv```
+- initialize virtual env ```python3 -m venv env```
+- start your virtual env ```source env/bin/activate```
 - install dependencies ```pip install -r requirements.txt```
 - copy .env.sample to .env and fill in all variables
-- start local database ```cd docker && docker-compose up -d database```
+- start local database ```cd docker && docker-compose up -d database && cd ..```
 - migrate local database ```python manage.py db upgrade```
 - run flask app ```flask run```
 
