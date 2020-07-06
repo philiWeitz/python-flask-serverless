@@ -22,4 +22,5 @@ script:
   - pytest
 
 after_success:
-  - test $TRAVIS_BRANCH = "master" && serverless deploy
+  - test $TRAVIS_BRANCH = "master" && serverless deploy -s prod
+  - test $TRAVIS_BRANCH = "develop" && serverless deploy -s dev
