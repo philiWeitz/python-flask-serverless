@@ -20,6 +20,7 @@ To prevent formatting conflicts I would strongly suggest to use "black" via git 
 - setup git hooks via ```python -m python_githooks```
 
 ## Deploy to AWS
+- install serverless globally ```npm install -g serverless```
 - install serverless packages ```npm install```
 - ensure that the AWS variables are set correctly in .env and run ```source .env```
 - deploy by running ```sls deploy```
