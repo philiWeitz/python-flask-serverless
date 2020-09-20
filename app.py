@@ -54,7 +54,7 @@ def get_job_by_id(id):
     try:
         job_offer = JobOffer.query.filter_by(id=id).first()
         if not job_offer:
-            abort(404, description="No job found with this id")
+            abort(404, description="No job found with this id.")
 
         return jsonify(job_offer.serialize())
     except Exception as e:
